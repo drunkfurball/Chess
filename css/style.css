@@ -20,12 +20,21 @@ td {
     height: 50px;
     font-size: 2.25em;
     text-align: center;
+    cursor: pointer;
 }
 
 td.black {
     background-color: gray;
 }
 
+td.black:hover {
+    background-color: #656565;
+}
+
 td.white {
     background-color: ghostwhite;
+}
+
+td.white:hover {
+    background-color: #e8e8ee;
 }
