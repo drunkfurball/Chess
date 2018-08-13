@@ -12,33 +12,9 @@ function gameBoard() {
             let zW = "";
             let sqColor = "";
             let algebraic = "";
-            switch(x) {
-                case 0:
-                    algebraic = algebraic + "a";
-                    break;
-                case 1:
-                    algebraic = algebraic + "b";
-                    break;
-                case 2:
-                    algebraic = algebraic + "c";
-                    break;
-                case 3:
-                    algebraic = algebraic + "d";
-                    break;
-                case 4:
-                    algebraic = algebraic + "e";
-                    break;
-                case 5:
-                    algebraic = algebraic + "f";
-                    break;
-                case 6:
-                    algebraic = algebraic + "g";
-                    break;
-                case 7:
-                    algebraic = algebraic + "h";
-                    break;
-            }
-            algebraic = algebraic + (8 - y).toString();
+			const letter = ["a", "b", "c", "d", "e", "f", "g", "h"];
+			algebraic += letter[x];
+            algebraic += (8 - y).toString();
             if (x < 4) {
                 zB = "q";
                 zW = "q";
@@ -96,21 +72,21 @@ function gameBoard() {
             let canv = document.getElementById("chess-board");
             let out_str = "<table>";
             for (var o = 0; o < this.tiles.length; o++) {
-                out_str = out_str + "<tr>";
+                out_str += "<tr>";
                 for (var t = 0; t < this.tiles[o].length; t++) {
-                    out_str = out_str + "<td class='" + this.tiles[o][t].color + "'>";
+                    out_str += "<td class='" + this.tiles[o][t].color + "'>";
                     for (var v = 0; v < this.players.length; v++){
                         for (var u = 0; u < this.players[v].pieces.length; u++) {
                             if (this.players[v].pieces[u].x == t && this.players[v].pieces[u].y == o) {
-                                out_str = out_str + this.players[v].pieces[u].charCode;
+                                out_str += this.players[v].pieces[u].charCode;
                             }
                         }
                     }
-                    out_str = out_str + "</td>"
+                    out_str += "</td>";
                 }
-                out_str = out_str + "</tr>";
+                out_str += "</tr>";
             }
-            out_str = out_str + "</table>";
+            out_str += "</table>";
             canv.innerHTML = out_str;
         }
     }
@@ -126,80 +102,35 @@ function Player(c, board) {
         switch(i) {
             case 0:
                 x = 4;
-                if (this.color == "black") {
-                    y = 0;
-                }
-                else {
-                    y = 7;
-                }
+				y = this.color == "black" ? 0 : 7;
                 piece = "King";
                 break;
             case 1:
                 x = 3;
-                if (this.color == "black") {
-                    y = 0;
-                }
-                else {
-                    y = 7;
-                }
+				y = this.color == "black" ? 0 : 7;
                 piece = "Queen";
                 break;
             case 2:
             case 3:
-                if (i==3) {
-                    x = 5;
-                }
-                else {
-                    x = 2;
-                }
-                if (this.color == "black") {
-                    y = 0;
-                }
-                else {
-                    y = 7;
-                }
+				x = i == 3 ? 5 : 2;
+				y = this.color == "black" ? 0 : 7;
                 piece = "Bishop";
                 break;
             case 4:
             case 5:
-                if (i==5) {
-                    x = 6;
-                }
-                else {
-                    x = 1;
-                }
-                if (this.color == "black") {
-                    y = 0;
-                }
-                else {
-                    y = 7;
-                }
-                piece = "Knight";
+				x = i == 5 ? 6 : 1;
+				y = this.color == "black" ? 0 : 7;
+				piece = "Knight";
                 break;
             case 6:
             case 7:
-                if (i == 7) {
-                    x = 7;
-                }
-                else {
-                    x = 0;
-                }
-                if (this.color == "black") {
-                    y = 0;
-                }
-                else {
-                    y = 7;
-                }
+				x = i == 7 ? 7 : 0;
+				y = this.color == "black" ? 0 : 7;
                 piece = "Rook";
                 break;
             default:
                 x = 15 - i;
-                if (this.color == "black") {
-                    y = 1;
-                }
-                else {
-                    y = 6;
-                }
+				y = this.color == "black" ? 1 : 6;
                 piece = "Pawn";
                 break;
         }
