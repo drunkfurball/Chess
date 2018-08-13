@@ -9,10 +9,23 @@ html, body {
     height: 100%;
 }
 
-table {
+#help {
     position: absolute;
-    top: 250px;
-    left: 600px;
+    top: 0;
+    left: 0;
+    padding: 5px;
+}
+
+#chess-board {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+table, th, tb {
+    border-collapse: collapse;
 }
 
 td {
