@@ -7,3 +7,6 @@
 - Alexis Pandaan
   - Reworked algebraic notation to be handled with an array rather than aa switch statement
   - Other improvements
+- Christopher R. Lowery (a.k.a., The PowerShell Bear)
+  - Cleaned up markdown
+  - Added link to Github Page
