@@ -1,7 +1,7 @@
 # List of contributors and summary of contributions
 
 - Murph Strange
-  -Initial Code
+  - Initial Code
 - Muhammad Farhan Mahmood
   - Currently adding playable with mouse functionality
 - Alexis Pandaan
