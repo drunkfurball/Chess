@@ -1,5 +1,7 @@
 # Chess
+
 JavaScript Chess - Work in progress
 
-# Contributors
+## Contributors
+
 Open Contributors.md to view which contributors is working on what functionality. [See Contributors List](./Contributors.md)
