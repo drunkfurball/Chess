@@ -74,7 +74,7 @@ function gameBoard() {
             for (var o = 0; o < this.tiles.length; o++) {
                 out_str += "<tr>";
                 for (var t = 0; t < this.tiles[o].length; t++) {
-                    out_str += "<td class='" + this.tiles[o][t].color + "'>";
+                    out_str += "<td id='' class='" + this.tiles[o][t].color + "' onclick='pieceMovement(this)' data-cord-x='" + t + "' data-cord-y='" + o + "'>";
                     for (var v = 0; v < this.players.length; v++){
                         for (var u = 0; u < this.players[v].pieces.length; u++) {
                             if (this.players[v].pieces[u].x == t && this.players[v].pieces[u].y == o) {
@@ -324,6 +324,7 @@ function gamePiece(x, y, p, player) {
                             this.x = this.x + coords[j][0];
                             this.y = this.y + coords[j][1];
                             moved = true;
+                            pieceMoved = true;
                         }
                     }
                 }
@@ -424,6 +425,78 @@ function gamePiece(x, y, p, player) {
 }
 let myBoard = new gameBoard();
 myBoard.draw();
+let turn = 'w';
+
+let activeTile = {pid: -1, cordX: -1, cordY: -1}; //Track active tile
+let pieceMoved = false;
+let ownPiece = false;
+
+function pieceMovement(tile){
+    let cordX = Number(tile.getAttribute("data-cord-x"));
+    let cordY = Number(tile.getAttribute("data-cord-y"));
+    let p = (turn == 'w') ? 1 : 0;
+    let i = 0;
+    
+    for(i = 0; i < myBoard.players[p].pieces.length && ownPiece === false; i++)
+    {
+        ownPiece = myBoard.players[p].pieces[i].x == cordX && myBoard.players[p].pieces[i].y == cordY;
+    }
+
+    if(activeTile.cordX === -1 && activeTile.cordY === -1){
+        //Active the clicked Tile
+        activeTile.pid = i - 1;
+        if(ownPiece){
+            tile.id = "active";
+            activeTile.cordX = cordX;
+            activeTile.cordY = cordY;
+            ownPiece = false;
+        }
+    } 
+    else if(activeTile.cordX === cordX && activeTile.cordY === cordY){
+        //De-active same tile is clicked
+        tile.id = '';
+        activeTile.cordX = -1;
+        activeTile.cordY = -1;
+    }
+    else if(ownPiece){
+        console.log("should have changed");
+        //swap active state if own tile is clicked when another of own tile is active
+        let prevTile = document.getElementsByTagName('tr')[activeTile.cordY].getElementsByTagName('td')[activeTile.cordX];
+        prevTile.id = '';
+        tile.id = "active";
+        activeTile.cordX = cordX;
+        activeTile.cordY = cordY;
+        ownPiece = false;
+    }
+    else {
+        //Change Turn
+        let activePiece = document.getElementsByTagName('tr')[activeTile.cordY].getElementsByTagName('td')[activeTile.cordX];
+        let newCordX = Number(tile.getAttribute("data-cord-x")) - Number(activePiece.getAttribute("data-cord-x"));
+        let newCordY = Number(tile.getAttribute("data-cord-y")) - Number(activePiece.getAttribute("data-cord-y"));
+
+        /*console.log("ActivePieceCord(" + Number(activePiece.getAttribute("data-cord-x")) + ", " + Number(activePiece.getAttribute("data-cord-y")) + ")");
+        console.log("MoveToCord(" + Number(tile.getAttribute("data-cord-x")) + ", " + Number(tile.getAttribute("data-cord-y")) + ")");
+        console.log("NewCord(" + newCordX + ", " + newCordY + ")");*/
+        myBoard.players[p].pieces[activeTile.pid].move(newCordX, newCordY);
+        if(pieceMoved){
+            activePiece.id = '';
+            activeTile.cordX = -1;
+            activeTile.cordY = -1;
+            turn = (turn === 'w') ? 'b':'w';
+            pieceMoved = false;
+        }
+        else {
+            window.alert('Invalid Move!');
+            activePiece.id = '';
+            activeTile.cordX = -1;
+            activeTile.cordY = -1;
+        }
+        currentPiece = 0;
+        console.log(turn);
+        console.log(ownPiece);
+    }
+}
+
 //Handles
 let bking = myBoard.players[0].pieces[0];
 let bqueen = myBoard.players[0].pieces[1];
