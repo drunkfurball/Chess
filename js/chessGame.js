@@ -74,7 +74,7 @@ function gameBoard() {
             for (var o = 0; o < this.tiles.length; o++) {
                 out_str += "<tr>";
                 for (var t = 0; t < this.tiles[o].length; t++) {
-                    out_str += "<td class='" + this.tiles[o][t].color + "'>";
+                    out_str += "<td id='' class='" + this.tiles[o][t].color + "' onclick='pieceMovement(this)' data-cord-x='" + t + "' data-cord-y='" + o + "'>";
                     for (var v = 0; v < this.players.length; v++){
                         for (var u = 0; u < this.players[v].pieces.length; u++) {
                             if (this.players[v].pieces[u].x == t && this.players[v].pieces[u].y == o) {
@@ -424,6 +424,45 @@ function gamePiece(x, y, p, player) {
 }
 let myBoard = new gameBoard();
 myBoard.draw();
+let turn = 'w';
+
+let activeTile = {cordX: -1, cordY: -1}; //Track active tile
+
+function pieceMovement(tile){
+    let cordX = Number(tile.getAttribute("data-cord-x"));
+    let cordY = Number(tile.getAttribute("data-cord-y"));
+    let active = false;
+    let p = (turn == 'w') ? 1 : 0;
+
+    for(let i = 0; i < myBoard.players[p].pieces.length && active == false; i++)
+    {
+        active = myBoard.players[p].pieces[i].x == cordX && myBoard.players[p].pieces[i].y == cordY;
+    }
+
+    if(activeTile.cordX === -1 && activeTile.cordY === -1){
+        //Active the clicked Tile
+        if(active){
+            tile.id = "active";
+            activeTile.cordX = cordX;
+            activeTile.cordY = cordY;
+        }
+    } 
+    else if(activeTile.cordX === cordX && activeTile.cordY === cordY){
+        //De-active same tile is clicked
+        tile.id = '';
+        activeTile.cordX = -1;
+        activeTile.cordY = -1;
+    }
+    else {
+        //Change Turn
+        let prevTile = document.getElementsByTagName('tr')[activeTile.cordY].getElementsByTagName('td')[activeTile.cordX];
+        prevTile.id = '';
+        activeTile.cordX = -1;
+        activeTile.cordY = -1;
+        turn = (turn === 'w') ? 'b':'w';
+        console.log(turn);
+    }
+}
 //Handles
 let bking = myBoard.players[0].pieces[0];
 let bqueen = myBoard.players[0].pieces[1];

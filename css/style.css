@@ -51,3 +51,7 @@ td.white {
 td.white:hover {
     background-color: #e8e8ee;
 }
+
+#active {
+    background-color: goldenrod;
+}
