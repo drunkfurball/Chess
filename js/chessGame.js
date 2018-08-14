@@ -431,17 +431,17 @@ let activeTile = {cordX: -1, cordY: -1}; //Track active tile
 function pieceMovement(tile){
     let cordX = Number(tile.getAttribute("data-cord-x"));
     let cordY = Number(tile.getAttribute("data-cord-y"));
-    let active = false;
+    let ownPiece = false;
     let p = (turn == 'w') ? 1 : 0;
 
-    for(let i = 0; i < myBoard.players[p].pieces.length && active == false; i++)
+    for(let i = 0; i < myBoard.players[p].pieces.length && ownPiece == false; i++)
     {
-        active = myBoard.players[p].pieces[i].x == cordX && myBoard.players[p].pieces[i].y == cordY;
+        ownPiece = myBoard.players[p].pieces[i].x == cordX && myBoard.players[p].pieces[i].y == cordY;
     }
 
     if(activeTile.cordX === -1 && activeTile.cordY === -1){
         //Active the clicked Tile
-        if(active){
+        if(ownPiece){
             tile.id = "active";
             activeTile.cordX = cordX;
             activeTile.cordY = cordY;
@@ -452,6 +452,13 @@ function pieceMovement(tile){
         tile.id = '';
         activeTile.cordX = -1;
         activeTile.cordY = -1;
+    }
+    else if(ownPiece){
+        let prevTile = document.getElementsByTagName('tr')[activeTile.cordY].getElementsByTagName('td')[activeTile.cordX];
+        prevTile.id = '';
+        tile.id = "active";
+        activeTile.cordX = cordX;
+        activeTile.cordY = cordY;
     }
     else {
         //Change Turn
