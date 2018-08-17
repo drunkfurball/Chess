@@ -11,3 +11,5 @@
 - Christopher R. Lowery (a.k.a., The PowerShell Bear)
   - Cleaned up markdown
   - Added link to Github Page
+- Gollamudi Surya Teja (a.k.a binary01)
+  - Fixed Deselect error
