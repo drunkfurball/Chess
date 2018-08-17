@@ -303,11 +303,11 @@ function gamePiece(x, y, p, player) {
             if (this.whereIs(this.Player.Board.players[playerIndex].pieces, this.x + 1, this.y + (playerIndex ? 1 : -1))) {
                 move_list.push(this.moveFilter([[1, (playerIndex ? 1 : -1)]], this.Player));
             }
-            if (this.first) {
-                move_list.push(this.moveFilter([[0, (playerIndex ? 1 : -1)], [0, (playerIndex ? 2 : -2)]], this.Player));
-            }
-            else {
-                move_list.push(this.moveFilter([[0, (playerIndex ? 1 : -1)]], this.Player));
+			if (!this.whereIs(this.Player.Board.players[playerIndex].pieces, this.x, this.y + (playerIndex ? 1 : -1))){
+				move_list.push(this.moveFilter([[0, (playerIndex ? 1 : -1)]], this.Player));
+			}
+            if (this.first && !this.whereIs(this.Player.Board.players[playerIndex].pieces, this.x, this.y + (playerIndex ? 2 : -2))) {
+                move_list.push(this.moveFilter([[0, (playerIndex ? 2 : -2)]], this.Player));
             }
         }
         return move_list;
