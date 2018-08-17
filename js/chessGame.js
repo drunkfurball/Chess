@@ -1,5 +1,5 @@
-//TODO: Add check detection, 
-//elimination of any moves that result in players own king being put in check, 
+//TODO: Add check detection,
+//elimination of any moves that result in players own king being put in check,
 //fix pawn promotion to not use prompt
 //add onclick functions to handle moves
 function gameBoard() {
@@ -202,7 +202,7 @@ function gamePiece(x, y, p, player) {
             }
             if (this.y + arr[h][1] > 7 || this.y + arr[h][1] < 0 || this.x + arr[h][0] > 7 || this.x + arr[h][0] < 0) {
                 break;
-            }            
+            }
             else {
                 if (arr[h].length > 0) {
                     arr2.push(arr[h]);
@@ -292,7 +292,7 @@ function gamePiece(x, y, p, player) {
                 }
                 if (
                     this.whereIs(this.Player.Board.players[playerIndex].pieces, this.x + 1, this.y) &&
-                    this.thereIs(this.Player.Board.players[playerIndex].pieces, this.x + 1, this.y) 
+                    this.thereIs(this.Player.Board.players[playerIndex].pieces, this.x + 1, this.y)
                 ) {
                     move_list.push(this.moveFilter([[1, (playerIndex? 1 : -1)]], this.Player));
                 }
@@ -315,7 +315,7 @@ function gamePiece(x, y, p, player) {
     this.move = function(x, y) {
         if (((this.Player.color == "black")? 0 : 1) == this.Player.Board.turn) {
             let moved = false;
-            let inthreat = this.threat();            
+            let inthreat = this.threat();
             for (var i = 0; i < inthreat.length; i++) {
                 let coords = inthreat[i];
                 for (var j = 0; j < coords.length; j++) {
@@ -398,7 +398,7 @@ function gamePiece(x, y, p, player) {
                             }
                         }
                     }
-                    
+
                     if (this.first) {
                         this.first = false;
                     }
@@ -434,9 +434,12 @@ let ownPiece = false;
 function pieceMovement(tile){
     let cordX = Number(tile.getAttribute("data-cord-x"));
     let cordY = Number(tile.getAttribute("data-cord-y"));
+    if(cordX==-1 || cordY==-1){
+      console.log('deactivated tile, re select tile');
+      return turn;
+    }
     let p = (turn == 'w') ? 1 : 0;
     let i = 0;
-    
     for(i = 0; i < myBoard.players[p].pieces.length && ownPiece === false; i++)
     {
         ownPiece = myBoard.players[p].pieces[i].x == cordX && myBoard.players[p].pieces[i].y == cordY;
@@ -451,12 +454,15 @@ function pieceMovement(tile){
             activeTile.cordY = cordY;
             ownPiece = false;
         }
-    } 
+    }
     else if(activeTile.cordX === cordX && activeTile.cordY === cordY){
         //De-active same tile is clicked
+        var deactivateflag=1;
         tile.id = '';
         activeTile.cordX = -1;
         activeTile.cordY = -1;
+        console.log('deselected tab and coordinates are reset');
+        ownPiece=false;
     }
     else if(ownPiece){
         console.log("should have changed");
@@ -470,6 +476,11 @@ function pieceMovement(tile){
     }
     else {
         //Change Turn
+        if(deactivateflag===1){
+          console.log('flag active');
+          deactivateflag=0;
+          return turn;
+        }
         let activePiece = document.getElementsByTagName('tr')[activeTile.cordY].getElementsByTagName('td')[activeTile.cordX];
         let newCordX = Number(tile.getAttribute("data-cord-x")) - Number(activePiece.getAttribute("data-cord-x"));
         let newCordY = Number(tile.getAttribute("data-cord-y")) - Number(activePiece.getAttribute("data-cord-y"));
